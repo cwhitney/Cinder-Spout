@@ -11,14 +11,14 @@ namespace cinder {
 
 	class SpoutOut {
 	public:
-		SpoutOut( const std::string& name, const ivec2& size )
-			: mMemorySharedMode{ false }
-			, mSize{ size }
-			, mName{ name }
+		SpoutOut() {};
+			
+		void init(const std::string& name, const ivec2& size)
 		{
+			mSize = size;
+			mName = name;
 			if( mSpoutSender.CreateSender( mName.c_str(), mSize.x, mSize.y ) ) {
 				mMemorySharedMode = mSpoutSender.GetMemoryShareMode();
-				CI_LOG_I( "Memory share: " << mMemorySharedMode );
 				mTexture = gl::Texture2d::create( mSize.x, mSize.y, gl::Texture::Format().loadTopDown() );
 			}
 			else {
@@ -71,7 +71,7 @@ namespace cinder {
 			return true;
 		}
 
-		bool				mMemorySharedMode;
+		bool				mMemorySharedMode = false;
 		char				mSenderName[256]; // sender name
 		std::string			mName;
 		SpoutSender			mSpoutSender;	// Create a Spout receiver object
